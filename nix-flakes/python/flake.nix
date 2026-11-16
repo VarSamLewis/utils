@@ -1,5 +1,5 @@
 {
-  description = "Small Python development shell";
+  description = "Python development shell with uv";
 
   inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
@@ -12,10 +12,17 @@
         let pkgs = import nixpkgs { inherit system; };
         in {
           default = pkgs.mkShell {
-            packages = with pkgs; [ python3 python3Packages.pip ];
+            packages = with pkgs; [
+              python3
+              uv
+              python3Packages.pip
+              python3Packages.virtualenv
+            ];
             shellHook = ''
               echo "Python $(python --version)"
-              echo "Create an environment with: python -m venv .venv"
+              echo "uv $(uv --version)"
+              echo "Create an environment with: uv venv"
+              echo "Install dependencies with: uv sync"
             '';
           };
         });
